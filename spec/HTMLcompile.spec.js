@@ -1,24 +1,15 @@
 
-var audrey2 = require('../index.js');
+var HTMLcompiler = require('../index.js');
 
 
 
-describe("Object reading", function() {
+describe("HTML reading", function() {
   //var variableglobal for the scope;
 
    //SOME CALLING FUNCTIONS
+ 
 
-var customObject={
-	header:[">b"],
-	body:[">b"],
-	footer:[">b"],
-	b:"print this",
-	colors:{b:"red"}
-}
 
-//optional for object factories
-var audrey=audrey2(customObject);
-   
 
 //BEFORE EACH TEST-- do
 
@@ -34,19 +25,97 @@ var audrey=audrey2(customObject);
 
 //TESTS
 
-  it("must admit errors and return an array", function() {  
-var expectErrors= [
-{code:"W05", message:"Does it have to be human?", aux:"Feed me!"},
-{code:"W05", message:"Does it have to be mine?", aux:"Feed me!"}];
+ 
+//OBJECT OF TESTING
 
-audrey.feed("W05", "Does it have to be human?", "Feed me!");
-audrey.feed("W05", "Does it have to be mine?", "Feed me!");
+var html= "<!DOCTYPE html>\n"+
+"<html>\n"+
+"<body >\n"+
+"<h1>My First Heading</h1>\n"+
+"<p>My first paragraph.</p>\n"+
+"</body>\n"+
+"</html>";
 
+var compiler=HTMLcompiler(html);
+compiler.parseString();
+
+  
+  it("array must be without < character", function() {  
     //EXPECTATION 1
-    expect(audrey.getErrors()).toEqual(expectErrors);
-
+ //EXPECTATION 1
+    var output= compiler.output();
+   // console.log(output);
+    output.forEach(function(element){   
+      //console.log(element);
+    expect(element.indexOf("<")).toEqual(-1);
+    })
   });
 
+   it("array must be without > character", function() {  
+    //EXPECTATION 1
+    var output= compiler.output();
+   // console.log(output);
+    output.forEach(function(element){   
+      //console.log(element);
+    expect(element.indexOf(">")).toEqual(-1);
+    })
+  });
+
+  it("should pass from string to array", function() {   
+    //EXPECTATION 1
+        var output2= compiler.output();
+
+    //console.log(compiler.output());
+    expect(output2).toEqual(["!DOCTYPE html",
+                              "html",
+                              "body ",
+                              "h1", 
+                              "My First Heading",
+                              "/h1",
+                              "p",
+                              "My first paragraph.",
+                              "/p",
+                              "/body",
+                              "/html"]);
+  });
+
+
+
+
+//OBJECT OF TESTING
+
+var html= "<!DOCTYPE html>\n"+"\n"+
+"<html>\n"+"\n"+"\n"+
+"<body >\n"+
+"<h1>My First Heading</h1>\n"+
+"<p>My first paragraph.</p>\n"+
+"</body>\n"+
+"</html>";
+
+var compiler=HTMLcompiler(html);
+compiler.parseString();
+
+
+  it("should delete the new lines", function() {   
+ 
+ //EXPECTATION 1
+        var output2= compiler.output();
+
+    //console.log(compiler.output());
+    expect(output2).toEqual(["!DOCTYPE html",
+                              "html",
+                              "body ",
+                              "h1", 
+                              "My First Heading",
+                              "/h1",
+                              "p",
+                              "My first paragraph.",
+                              "/p",
+                              "/body",
+                              "/html"]);
+  
+
+ });
 
 
 
