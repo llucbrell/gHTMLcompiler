@@ -34,7 +34,8 @@ elementArray.push(elemento);
 for(var i=0;i<elementArray.length; i++){	
 	for(var ii=0; ii<elementArray[i].length;ii++){
 		if(elementArray[i][ii] !==''){	
-		var elementu=elementArray[i][ii].split(">");
+		var elementu=elementArray[i][ii].replace(">", "#%");
+		elementu=elementu.split("%");
 			if (elementu !== ''){
 			tagArray.push(elementu);
 			}
@@ -47,7 +48,6 @@ for(var j=0; j<tagArray.length; j++){
 		if(tagArray[j][jj] !== '') array.push(tagArray[j][jj]);
 	}
 }
-
 
 
 }
